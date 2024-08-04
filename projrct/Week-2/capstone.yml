@@ -1,0 +1,8 @@
+name: capstone
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - jupyter
+  - pyspark
+prefix: /opt/miniconda3/envs/capstone
