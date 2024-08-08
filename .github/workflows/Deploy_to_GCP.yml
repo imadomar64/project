@@ -13,6 +13,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: List files for debugging
+      run: |
+        echo "Listing files in the root directory:"
+        ls -la
+        echo "Listing files in subdirectories:"
+        find . -type f -name 'app.yaml'
+
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
       with:
@@ -32,6 +39,7 @@ jobs:
           echo "app.yaml not found!"
           exit 1
         fi
+
 
 
 
