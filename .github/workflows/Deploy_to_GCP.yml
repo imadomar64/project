@@ -25,6 +25,13 @@ jobs:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Deploy to App Engine
-      run: gcloud app deploy --quiet
+      run: |
+        if [ -f app.yaml ]; then
+          gcloud app deploy --quiet
+        else
+          echo "app.yaml not found!"
+          exit 1
+        fi
+
 
 
