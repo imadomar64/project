@@ -17,8 +17,10 @@ jobs:
       run: |
         echo "Listing files in the root directory:"
         ls -la
-        echo "Listing files in subdirectories:"
+        echo "Searching for app.yaml in all directories:"
         find . -type f -name 'app.yaml'
+        echo "Displaying content of app.yaml:"
+        cat $(find . -type f -name 'app.yaml') || echo "app.yaml not found!"
 
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
@@ -33,13 +35,12 @@ jobs:
 
     - name: Deploy to App Engine
       run: |
-        if [ -f app.yaml ]; then
-          gcloud app deploy --quiet
+        APP_YAML=$(find . -type f -name 'app.yaml')
+        if [ -f "$APP_YAML" ]; then
+          gcloud app deploy "$APP_YAML" --quiet
         else
           echo "app.yaml not found!"
           exit 1
         fi
-
-
 
 
