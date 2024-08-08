@@ -20,9 +20,8 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-  
-
     - name: Authenticate to GCP
       run: echo "${{ secrets.GCP_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
 
-    # Add more steps to deploy your application
+    - name: Deploy to App Engine
+      run: gcloud app deploy --quiet
