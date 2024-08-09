@@ -1,6 +1,7 @@
 name: Deploy DAG
 
 on: [push]
+
 jobs:
   job_id:
     permissions:
