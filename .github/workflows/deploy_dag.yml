@@ -26,4 +26,4 @@ jobs:
 
     - name: Upload DAG to GCS
       run: |
-        gsutil cp dags/ecommerce_insights_dag.py gs://your-bucket-name/dags/
+        gsutil cp dags/ecommerce_insights_dag.py gs://europe-west1-deng-capstone--2a44b3bb-bucket/dags/
