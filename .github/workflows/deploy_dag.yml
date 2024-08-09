@@ -17,7 +17,7 @@ jobs:
       uses: 'google-github-actions/auth@v2'
       with:
         workload_identity_provider: 'projects/data-eng-capstone/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@data-eng-capstone.iam.gserviceaccount.com'
+        service_account: 'deng-capstone-service-account@data-eng-capstone.iam.gserviceaccount.com'
 
     - id: 'upload-file'
       uses: 'google-github-actions/upload-cloud-storage@v2'
