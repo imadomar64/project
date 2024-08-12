@@ -13,18 +13,16 @@ jobs:
     steps:
     - id: 'checkout'
       uses: 'actions/checkout@v4'
-
-      id: 'auth'
+    
+    - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-      # this is the base64 version of the key json file of the service account
-      # cat sa.json | tr -d '\n' | base64 | pbcopy
-      credentials_json: ${{ secrets.CAPSTONE_SERVICE_ACCOUNT_BASE64 }}
-    
+        credentials_json: ${{ secrets.CAPSTONE_SERVICE_ACCOUNT_BASE64 }}
+
     - id: 'upload-dags-to-gcs'
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
-      path: 'dags'
-      # check if this environment variable in Github Actions UI
-      destination: "${{ vars.DAGS_BUCKET}}/dags"
-      parent: false
+        path: 'dags'
+        destination: "${{ vars.DAGS_BUCKET }}/dags"
+        parent: false
+
