@@ -14,14 +14,17 @@ jobs:
     - id: 'checkout'
       uses: 'actions/checkout@v4'
 
-    - id: 'auth'
+      id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        workload_identity_provider: 'projects/117049111496926380496/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'deng-capstone-service-account@my-project.iam.gserviceaccount.com'
-
-    - id: 'upload-file'
+      # this is the base64 version of the key json file of the service account
+      # cat sa.json | tr -d '\n' | base64 | pbcopy
+      credentials_json: ${{ secrets.CAPSTONE_SERVICE_ACCOUNT_BASE64 }}
+    
+    - id: 'upload-dags-to-gcs'
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
-        path: '/dags/ecommerce_insights_dag.py'
-        destination: 'europe-west1-deng-capstone--2a44b3bb-bucket/dags'
+      path: 'dags'
+      # check if this environment variable in Github Actions UI
+      destination: "${{ vars.DAGS_BUCKET}}/dags"
+      parent: false
