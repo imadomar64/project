@@ -23,6 +23,6 @@ jobs:
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
         path: 'dags'
-        destination: "${{ vars.DAGS_BUCKET }}/dags"
+        destination: 'europe-west1-deng-capstone--2a44b3bb-bucket/dags' 
         process_gcloudignore: false  # Disable processing of .gcloudignore
         parent: false
