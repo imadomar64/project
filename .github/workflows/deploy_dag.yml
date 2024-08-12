@@ -3,24 +3,27 @@ name: Deploy DAG
 on: [push]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
 
     steps:
-    - id: 'checkout'
-      uses: 'actions/checkout@v4'
-
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        workload_identity_provider: 'projects/388713785666/locations/global/workloadIdentityPools/workloadIdentityPools/providers/workloadIdentityPoolProviders'
-        service_account: 'deng-capstone-service-account@data-eng-capstone.iam.gserviceaccount.com'
-
-    - id: 'upload-file'
-      uses: 'google-github-actions/upload-cloud-storage@v2'
+        python-version: 3.9
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-cloud-storage
+        
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v1
       with:
-        path: 'dags/ecommerce_insights_dag.py'
-        destination: 'europe-west1-deng-capstone--2a44b3bb-bucket/dags/'
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Upload DAG to GCS
+      run: |
+        gsutil cp dags/ecommerce_insights_dag.py gs://europe-west1-deng-capstone--2a44b3bb-bucket/dags/
