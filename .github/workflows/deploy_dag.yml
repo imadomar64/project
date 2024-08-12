@@ -1,4 +1,4 @@
-name: Deploy DAG
+name: Deploy to Google Cloud
 
 on: [push]
 
@@ -8,6 +8,8 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
+    runs-on: ubuntu-latest
+    
     steps:
     - id: 'checkout'
       uses: 'actions/checkout@v4'
@@ -15,17 +17,11 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+        workload_identity_provider: 'projects/117049111496926380496/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: 'deng-capstone-service-account@my-project.iam.gserviceaccount.com'
 
     - id: 'upload-file'
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
-        path: '/path/to/file'
-        destination: 'bucket-name'
-
-    # Example of using the output
-    - id: 'uploaded-files'
-      uses: 'foo/bar@v1'
-      env:
-        file: '${{ steps.upload-file.outputs.uploaded }}'
+        path: '/dags/ecommerce_insights_dag.py'
+        destination: 'europe-west1-deng-capstone--2a44b3bb-bucket/dags'
