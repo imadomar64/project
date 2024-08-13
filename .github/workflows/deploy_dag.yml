@@ -10,6 +10,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DAGS_BUCKET: 'europe-west1-deng-capstone--2a44b3bb-bucket'  # Replace 'your-bucket-name' with your actual bucket name
     steps:
     - id: 'checkout'
       uses: 'actions/checkout@v4'
@@ -23,6 +25,6 @@ jobs:
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
         path: 'dags'
-        destination: 'europe-west1-deng-capstone--2a44b3bb-bucket/dags' 
+        destination: "${{ vars.DAGS_BUCKET }}/dags"
         process_gcloudignore: false  # Disable processing of .gcloudignore
         parent: false
