@@ -41,7 +41,7 @@ def etl_with_spark():
     # Write insights to GCS
     datetime_now = datetime.now().strftime("%m%d%Y%H%M%S")
 
-    write_path = f"gs://project_imad2/insights/{datetime_now}.csv"
+    write_path = f"gs://ecommerce-customer/insights/{datetime_now}.csv"
 
     write_to_gcs(df=insights_df, filepath=write_path)
 
