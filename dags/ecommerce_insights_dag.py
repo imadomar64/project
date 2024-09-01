@@ -31,7 +31,7 @@ def etl_with_spark():
     .config("spark.sql.repl.eagerEval.enabled", True) \
     .getOrCreate()
 
-    file_path = f"gs://{GCS_BUCKET}/e-commerce-customer-behavior.csv"
+    file_path = f"gs://ecommerce-customer/e-commerce-customer-behavior.csv"
     # read data from gcs
     customer_df = read_data(spark=spark, file_path=file_path)
 
@@ -41,7 +41,7 @@ def etl_with_spark():
     # Write insights to GCS
     datetime_now = datetime.now().strftime("%m%d%Y%H%M%S")
 
-    write_path = f"gs://{GCS_BUCKET}/insights/{datetime_now}.csv"
+    write_path = f"gs://ecommerce-customer/insights/{datetime_now}.csv"
 
     write_to_gcs(df=insights_df, filepath=write_path)
 
