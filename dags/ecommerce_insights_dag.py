@@ -5,7 +5,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
 from pyspark.sql import SparkSession, DataFrame, functions as sf
 
-GCS_BUCKET = "ecommerce-customer-bucket"
+GCS_BUCKET = "ecommerce-customer"
 
 def read_data(spark: SparkSession, file_path: str) -> DataFrame:
     """reads csv file from specified file path."""
@@ -31,7 +31,7 @@ def etl_with_spark():
     .config("spark.sql.repl.eagerEval.enabled", True) \
     .getOrCreate()
 
-    file_path = f"gs://ecommerce-customer-bucket/e-commerce-customer-behavior.csv"
+    file_path = f"gs://ecommerce-customer/ecommerce-customer-bucket/E-commerce Customer Behavior - Sheet1.csv"
     # read data from gcs
     customer_df = read_data(spark=spark, file_path=file_path)
 
@@ -41,7 +41,7 @@ def etl_with_spark():
     # Write insights to GCS
     datetime_now = datetime.now().strftime("%m%d%Y%H%M%S")
 
-    write_path = f"gs://project_imad/insights/{datetime_now}.csv"
+    write_path = f"gs://project_imad2/insights/{datetime_now}.csv"
 
     write_to_gcs(df=insights_df, filepath=write_path)
 
