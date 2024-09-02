@@ -12,7 +12,7 @@ def read_data(spark: SparkSession, file_path: str) -> DataFrame:
     return spark.read.csv(file_path, header=True, inferSchema=True)
 
 def calculate_highest_spend(df: DataFrame) -> DataFrame:
-    membership_by_gender = (df.groupBy("Gender", "Membership Type")
+    membership_by_gender = (df.groupBy("City", "Gender", "Membership Type")
                           .agg(sf.round(sf.mean("age"), 1).alias("Average_age"),
                                 sf.round(sf.mean("Items Purchased"), 0).alias("Average_items_purchased"),
                                sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"))
