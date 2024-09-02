@@ -53,7 +53,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="insights_dag5",
+    dag_id="insights_dag6",
     start_date=datetime(2024, 7, 14),
     schedule_interval="0 10 * * *",  # Daily interval at 10am
     catchup=False,
