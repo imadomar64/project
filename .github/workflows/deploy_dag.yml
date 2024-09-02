@@ -1,30 +1,44 @@
 name: Deploy to Google Cloud
 
+# This workflow runs whenever there is a push event to the repository.
 on: [push]
 
 jobs:
-  job_id:
+  deploy-dags:  # A descriptive job ID for deploying DAGs to Google Cloud Storage
     permissions:
+      # Setting permissions for the workflow job. 
+      # 'contents: read' allows reading repository content.
+      # 'id-token: write' allows generating ID tokens needed for authentication with Google Cloud.
       contents: 'read'
       id-token: 'write'
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # The job will run on the latest version of an Ubuntu runner
 
     env:
-      DAGS_BUCKET: 'us-central1-ecommerce-custo-733ad405-bucket'  # Replace 'your-bucket-name' with your actual bucket name
+      # Environment variable for the Google Cloud Storage bucket name.
+      # Replace 'your-bucket-name' with your actual bucket name.
+      DAGS_BUCKET: 'us-central1-ecommerce-custo-733ad405-bucket'  
+
     steps:
-    - id: 'checkout'
-      uses: 'actions/checkout@v4'
-    
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+    - name: Checkout repository  # Step to check out the repository code into the workflow.
+      uses: actions/checkout@v4  # Uses the GitHub Actions checkout action.
+
+    - name: Authenticate to Google Cloud  # Step to authenticate the workflow to Google Cloud.
+      uses: google-github-actions/auth@v2  # Uses Google GitHub Actions to authenticate.
       with:
+        # Uses a secret containing the Google Cloud service account key JSON.
         credentials_json: ${{ secrets.GCP_SA_KEY }}
-    
-    - id: 'upload-dags-to-gcs'
-      uses: 'google-github-actions/upload-cloud-storage@v2'
+
+    - name: Upload DAGs to GCS  # Step to upload DAGs to a specified Google Cloud Storage bucket.
+      uses: google-github-actions/upload-cloud-storage@v2  # Uses Google GitHub Actions to upload files to GCS.
       with:
+        # Specifies the directory to upload. 'dags' should be a directory in your repository.
         path: 'dags'
-        destination: "us-central1-ecommerce-custo-733ad405-bucket/dags"
-        process_gcloudignore: false  # Disable processing of .gcloudignore
+        # Uses the environment variable for the bucket name to specify the GCS destination path.
+        destination: "${{ env.DAGS_BUCKET }}/dags"
+        # Disable processing of the .gcloudignore file if present.
+        process_gcloudignore: false
+        # Ensures the files are uploaded directly into the destination without creating a parent folder.
         parent: false
+
+    
