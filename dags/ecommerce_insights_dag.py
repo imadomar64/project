@@ -32,12 +32,31 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
     Returns:
         DataFrame: A PySpark DataFrame containing aggregated statistics, sorted by average spend in descending order.
     """
-    membership_by_gender = (df.groupBy("City", "Gender", "Membership Type")
-                          .agg(sf.round(sf.mean("age"), 1).alias("Average_age"),
-                               sf.round(sf.mean("Items Purchased"), 0).alias("Average_items_purchased"),
-                               sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"))
-                          .sort("Average_spend", ascending=False))
+
+
+def calculate_membership_by_gender(df):
+    membership_by_gender = (
+        df.groupBy("City", "Gender", "Membership Type")
+          .agg(
+              # Age calculations
+              sf.round(sf.max("age"), 1).alias("Max_age"),
+              sf.round(sf.min("age"), 1).alias("Min_age"),
+              sf.round(sf.mean("age"), 1).alias("Average_age"),
+
+              # Items Purchased calculations
+              sf.round(sf.max("Items Purchased"), 0).alias("Max_items_purchased"),
+              sf.round(sf.min("Items Purchased"), 0).alias("Min_items_purchased"),
+              sf.round(sf.mean("Items Purchased"), 0).alias("Average_items_purchased"),
+
+              # Total Spend calculations
+              sf.round(sf.max("Total Spend"), 2).alias("Max_spend"),
+              sf.round(sf.min("Total Spend"), 2).alias("Min_spend"),
+              sf.round(sf.mean("Total Spend"), 2).alias("Average_spend")
+          )
+          .sort("Average_spend", ascending=False)
+    )
     return membership_by_gender
+
 
 def write_to_gcs(df: DataFrame, filepath: str):
     """
