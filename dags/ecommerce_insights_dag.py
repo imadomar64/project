@@ -22,7 +22,7 @@ def read_data(spark: SparkSession, file_path: str) -> DataFrame:
 
 def calculate_highest_spend(df: DataFrame) -> DataFrame:
     """
-    Calculates the average age, average items purchased, and average spend grouped by city, gender, and membership type,
+    Calculates the average age, average items purchased, average spend and sun spend grouped by city
     and sorts the results by the average spend in descending order.
     
     Args:
@@ -30,7 +30,7 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
                         Age, Items Purchased, and Total Spend.
     
     Returns:
-        DataFrame: A PySpark DataFrame containing aggregated statistics, sorted by average spend in descending order.
+        DataFrame: A PySpark DataFrame containing aggregated statistics, sorted by City in descending order.
     """
 
     Spend_by_City = (
@@ -46,7 +46,7 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
               sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"),
               sf.round(sf.sum("Total Spend"), 2).alias("Sum_spend")
           )
-          .sort("Average_spend", ascending=False)
+          .sort("City", ascending=False)
     )
     return Spend_by_City
 
@@ -112,7 +112,7 @@ default_args = {
 
 # Define the DAG
 with DAG(
-    dag_id="insights_dag_6",
+    dag_id="insights_dag_1",
     start_date=datetime(2024, 7, 14),
     schedule_interval="0 10 * * *",  # Daily interval at 10am
     catchup=False,
