@@ -33,28 +33,22 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
         DataFrame: A PySpark DataFrame containing aggregated statistics, sorted by average spend in descending order.
     """
 
-    membership_by_gender = (
+    Spend_by_City = (
         df.groupBy("City")
           .agg(
               # Age calculations
-           
               sf.round(sf.mean("age"), 1).alias("Average_age"),
              
-
               # Items Purchased calculations
-              
               sf.round(sf.mean("Items Purchased"), 0).alias("Average_items_purchased"),
               
-
               # Total Spend calculations
-              sf.round(sf.max("Total Spend"), 2).alias("Max_spend"),
-              sf.round(sf.min("Total Spend"), 2).alias("Min_spend"),
               sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"),
               sf.round(sf.sum("Total Spend"), 2).alias("Sum_spend")
           )
           .sort("Average_spend", ascending=False)
     )
-    return membership_by_gender
+    return Spend_by_City
 
 
 def write_to_gcs(df: DataFrame, filepath: str):
@@ -118,7 +112,7 @@ default_args = {
 
 # Define the DAG
 with DAG(
-    dag_id="insights_dag4",
+    dag_id="insights_dag 5",
     start_date=datetime(2024, 7, 14),
     schedule_interval="0 10 * * *",  # Daily interval at 10am
     catchup=False,
