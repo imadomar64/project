@@ -46,7 +46,7 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
               sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"),
               sf.round(sf.sum("Total Spend"), 2).alias("Sum_spend")
           )
-          .sort("Total Spend", ascending=False)
+          .sort("Sum_spend", ascending=False)
     )
     return Spend_by_City
 
