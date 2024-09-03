@@ -34,7 +34,7 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
     """
 
     membership_by_gender = (
-        df.groupBy("City", "Gender", "Membership Type")
+        df.groupBy("City")
           .agg(
               # Age calculations
               sf.round(sf.max("age"), 1).alias("Max_age"),
