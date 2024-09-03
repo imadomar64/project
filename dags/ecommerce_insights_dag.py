@@ -34,22 +34,25 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
     """
 
     membership_by_gender = (
-        df.groupBy("City")
+        df.groupBy("City", "Gender", "Membership Type")
           .agg(
               # Age calculations
               sf.round(sf.max("age"), 1).alias("Max_age"),
               sf.round(sf.min("age"), 1).alias("Min_age"),
               sf.round(sf.mean("age"), 1).alias("Average_age"),
+              sf.round(sf.sum("age"), 1).alias("Sum_age"),
 
               # Items Purchased calculations
               sf.round(sf.max("Items Purchased"), 0).alias("Max_items_purchased"),
               sf.round(sf.min("Items Purchased"), 0).alias("Min_items_purchased"),
               sf.round(sf.mean("Items Purchased"), 0).alias("Average_items_purchased"),
+              sf.round(sf.sum("Items Purchased"), 0).alias("Sum_items_purchased"),
 
               # Total Spend calculations
               sf.round(sf.max("Total Spend"), 2).alias("Max_spend"),
               sf.round(sf.min("Total Spend"), 2).alias("Min_spend"),
-              sf.round(sf.mean("Total Spend"), 2).alias("Average_spend")
+              sf.round(sf.mean("Total Spend"), 2).alias("Average_spend"),
+              sf.round(sf.sum("Total Spend"), 2).alias("Sum_spend")
           )
           .sort("Average_spend", ascending=False)
     )
@@ -117,7 +120,7 @@ default_args = {
 
 # Define the DAG
 with DAG(
-    dag_id="insights_dag2",
+    dag_id="insights_dag3",
     start_date=datetime(2024, 7, 14),
     schedule_interval="0 10 * * *",  # Daily interval at 10am
     catchup=False,
