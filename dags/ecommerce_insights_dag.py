@@ -33,8 +33,6 @@ def calculate_highest_spend(df: DataFrame) -> DataFrame:
         DataFrame: A PySpark DataFrame containing aggregated statistics, sorted by average spend in descending order.
     """
 
-
-def calculate_membership_by_gender(df):
     membership_by_gender = (
         df.groupBy("City", "Gender", "Membership Type")
           .agg(
@@ -119,7 +117,7 @@ default_args = {
 
 # Define the DAG
 with DAG(
-    dag_id="insights_dag9",
+    dag_id="insights_dag1",
     start_date=datetime(2024, 7, 14),
     schedule_interval="0 10 * * *",  # Daily interval at 10am
     catchup=False,
